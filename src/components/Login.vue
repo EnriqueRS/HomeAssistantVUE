@@ -40,7 +40,7 @@ import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { ref, onMounted, computed } from "vue";
 import { useStore } from 'vuex';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 export default {
   name: "Login",
