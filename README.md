@@ -1,5 +1,11 @@
 # home_assistant_front
 
+## What
+Frontend of Home Assistant. Uses its API to display system information.
+
+## Tecnology
+Project uses route, vuex, bootstrap, vee-validate, yup
+
 ## Project setup
 ```
 yarn install
