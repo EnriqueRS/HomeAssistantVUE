@@ -52,6 +52,7 @@ export default {
   setup(props, context) {
     console.log('context: '+context);
     let loading = ref(false);
+    let message = ref('');
     const store = useStore();
     const router = useRouter();
     const content = ref("");
@@ -61,17 +62,15 @@ export default {
     });
    const loggedIn = computed(() => store.state.auth.status.loggedIn);
 
-    function handleLogin(user) {
-      loading = true;
-      console.log(schema);
-      console.log(loggedIn);
+    function handleLogin(user) {   
+      loading.value = true;   
       store.dispatch("auth/login", user).then(
         () => {
           router.push("/home");
         },
         (error) => {
-          loading = false;
-          this.message =
+          loading.value = false;
+          message.value =
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
@@ -84,56 +83,17 @@ export default {
     onMounted(() => {
       console.log(content);
       console.log(schema);
-      console.log(handleLogin('user'));
-      if (this.loggedIn) {
+      if (loggedIn.value) {
         router.push("/profile");
       }
     });
 
     return {
-      loading
+      loading,
+      handleLogin,
+      message
     }
   },
-  // data() {
-  //   const schema = yup.object().shape({
-  //     username: yup.string().required("Username is required!"),
-  //     password: yup.string().required("Password is required!"),
-  //   });
-  //   return {
-  //     loading: false,
-  //     message: "",
-  //     schema,
-  //   };
-  // },
-  // computed: {
-  //   loggedIn() {
-  //     return this.$store.state.auth.status.loggedIn;
-  //   },
-  // },
-  // created() {
-  //   if (this.loggedIn) {
-  //     this.$router.push("/profile");
-  //   }
-  // },
-  // methods: {
-  //   handleLogin(user) {
-  //     this.loading = true;
-  //     this.$store.dispatch("auth/login", user).then(
-  //       () => {
-  //         this.$router.push("/home");
-  //       },
-  //       (error) => {
-  //         this.loading = false;
-  //         this.message =
-  //           (error.response &&
-  //             error.response.data &&
-  //             error.response.data.message) ||
-  //           error.message ||
-  //           error.toString();
-  //       }
-  //     );
-  //   },
-  // },
 };
 </script>
 <style scoped>

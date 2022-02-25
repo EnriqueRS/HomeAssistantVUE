@@ -10,9 +10,13 @@ class AuthService {
       .then(response => {
         console.log(response);
         const token = response.data.body.token;
+        const statusCode = response.data.statusCode;
         console.log(JSON.stringify(response.data));
         if (token) {
           localStorage.setItem('user', JSON.stringify(response.data.body));
+        }
+        if(statusCode !== 200) {
+          throw new Error(response.data.body);
         }
         return response.data;
       });

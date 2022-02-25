@@ -1,33 +1,39 @@
 <template>
   <div class="container">
-    <header class="jumbotron">
-      <h3>{{ content }}</h3>
-    </header>
+    <h-ainfo></h-ainfo>
+    <sensor-temperature></sensor-temperature>
   </div>
 </template>
 <script>
-import HomeService from "../services/home.service";
+import HAinfo from './HAinfo.vue';
+import HandleHome from '../handle/handle-home'
+import SensorTemperature from './SensorTemperature.vue';
+import { ref, onMounted } from "vue";
+
 export default {
-  name: "Home",
-  data() {
-    return {
-      content: "",
-    };
+  components: { 
+    HAinfo, 
+    SensorTemperature 
   },
-  mounted() {
-    HomeService.getStates().then(
+  name: "Home",
+  setup(){
+    const sensorsTemperatureList = ref([]);
+
+    onMounted(() =>{
+      // sensorsTemperatureList.value = HandleHome.getSensorsTemperature();
+      HandleHome.getSensorsTemperature().then(
       (response) => {
-        this.content = response.data;
+        console.log(response);
       },
       (error) => {
-        this.content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        console.error(error);
       }
     );
+  });
+
+  return {
+    sensorsTemperatureList
+  }
   },
 };
 </script>
