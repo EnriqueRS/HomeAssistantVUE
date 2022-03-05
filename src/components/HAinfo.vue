@@ -5,7 +5,7 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
     <div class="wrapper">
-      <img src="https://dovecot.dynu.net:8123/static/icons/favicon.ico" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/768px-Home_Assistant_Logo.svg.png" />
       <span class="text">
         <h1> {{ content.location_name }} <br /> </h1>
         <span class="clearfix">
@@ -54,7 +54,7 @@ export default {
 </script>
 <style scoped>
 img {
-  border-radius: 50%;
+  width: 5em;
 }
 
 .container-box {

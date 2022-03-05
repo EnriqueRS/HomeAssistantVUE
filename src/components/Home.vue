@@ -1,39 +1,33 @@
 <template>
   <div class="container">
     <h-ainfo></h-ainfo>
-    <sensor-temperature></sensor-temperature>
+    <h1>Sensors Temperature:</h1>
+    <sensor-temperature
+      v-for="sensor in sensorsTemperatureList"
+      v-bind:key="sensor.context.id"
+      v-bind:temperature="sensor.state"
+      v-bind:name="sensor.attributes.friendly_name"
+    ></sensor-temperature>
+    {{ sensorsTemperatureList }}
   </div>
 </template>
-<script>
-import HAinfo from './HAinfo.vue';
-import HandleHome from '../handle/handle-home'
-import SensorTemperature from './SensorTemperature.vue';
-import { ref, onMounted } from "vue";
 
-export default {
-  components: { 
-    HAinfo, 
-    SensorTemperature 
-  },
-  name: "Home",
-  setup(){
-    const sensorsTemperatureList = ref([]);
+<script setup>
+import HAinfo from "./HAinfo.vue";
+import HandleHome from "../handle/handle-home";
+import SensorTemperature from "./SensorTemperature.vue";
+import { ref } from "vue";
 
-    onMounted(() =>{
-      // sensorsTemperatureList.value = HandleHome.getSensorsTemperature();
-      HandleHome.getSensorsTemperature().then(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.error(error);
+  let sensorsTemperatureList = ref([]);
+  let arrayTemp = [];
+  
+  HandleHome.getStates().then((sensorList) => {
+    sensorList.forEach(sensor => {
+      if(sensor.attributes.device_class === 'humidity'
+      || sensor.attributes.device_class === 'temperature') {
+        arrayTemp.push(sensor);
       }
-    );
+    });
+      sensorsTemperatureList.value = arrayTemp;
   });
-
-  return {
-    sensorsTemperatureList
-  }
-  },
-};
 </script>

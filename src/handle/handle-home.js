@@ -13,9 +13,16 @@ class HandleHome {
   }
 
   getSensorsTemperature() {
-    const sensorList = this.getStates();
-    console.log(sensorList);
-    return sensorList;
+    let sensorTemperatureList = [];
+    this.getStates().then((sensorList) => {
+      sensorList.forEach(sensor => {
+        if(sensor.attributes.device_class === 'humidity'
+        || sensor.attributes.device_class === 'temperature') {
+          sensorTemperatureList.push(sensor);
+        }
+      });
+    });
+    return sensorTemperatureList;
   }
 }
 export default new HandleHome();
