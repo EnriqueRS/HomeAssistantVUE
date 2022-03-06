@@ -35,67 +35,52 @@
     </div>
   </div>
 </template>
-<script>
+
+<script setup>
 import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import { ref, onMounted, computed } from "vue";
-import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-export default {
-  name: "Login",
-  components: {
-    Form,
-    Field,
-    ErrorMessage,
-  },
-  setup(props, context) {
-    console.log('context: '+context);
-    let loading = ref(false);
-    let message = ref('');
-    const store = useStore();
-    const router = useRouter();
-    const content = ref("");
-    const schema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
-      password: yup.string().required("Password is required!"),
-    });
-   const loggedIn = computed(() => store.state.auth.status.loggedIn);
+let loading = ref(false);
+let message = ref("");
+const store = useStore();
+const router = useRouter();
+const content = ref("");
+const schema = yup.object().shape({
+  username: yup.string().required("Username is required!"),
+  password: yup.string().required("Password is required!"),
+});
+const loggedIn = computed(() => store.state.auth.status.loggedIn);
 
-    function handleLogin(user) {   
-      loading.value = true;   
-      store.dispatch("auth/login", user).then(
-        () => {
-          router.push("/home");
-        },
-        (error) => {
-          loading.value = false;
-          message.value =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+function handleLogin(user) {
+  loading.value = true;
+  store.dispatch("auth/login", user).then(
+    () => {
+      router.push("/home");
+    },
+    (error) => {
+      loading.value = false;
+      message.value =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
     }
+  );
+}
 
-    onMounted(() => {
-      console.log(content);
-      console.log(schema);
-      if (loggedIn.value) {
-        router.push("/profile");
-      }
-    });
-
-    return {
-      loading,
-      handleLogin,
-      message
-    }
-  },
-};
+onMounted(() => {
+  console.log(content);
+  console.log(schema);
+  if (loggedIn.value) {
+    router.push("/profile");
+  }
+});
 </script>
+
 <style scoped>
 label {
   display: block;
