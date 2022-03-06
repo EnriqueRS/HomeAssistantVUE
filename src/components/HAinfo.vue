@@ -5,52 +5,46 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
     <div class="wrapper">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/768px-Home_Assistant_Logo.svg.png" />
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/768px-Home_Assistant_Logo.svg.png"
+      />
       <span class="text">
-        <h1> {{ content.location_name }} <br /> </h1>
+        <h1>{{ content.location_name }} <br /></h1>
         <span class="clearfix">
           <i v-if="running" class="material-icons">filter_drama</i>
           <i v-else class="material-icons">block</i>
           <small class="right"
-            ><i>{{ content.state }}</i></small>
+            ><i>{{ content.state }}</i></small
+          >
         </span>
       </span>
     </div>
   </header>
   <body></body>
 </template>
-<script>
+
+<script setup>
 import HomeAssistantService from "../services/home-assistant.service";
 import { onMounted, ref, computed } from "vue";
 
-export default {
-  name: "HAinfo",
-  setup() {
-   const content = ref("");
-   const running = computed(() => content.value.state === "RUNNING");
+const content = ref("");
+const running = computed(() => content.value.state === "RUNNING");
 
-    onMounted(() => {
-      HomeAssistantService.getInfo().then(
-        (response) => {
-          content.value = response.data;
-        },
-        (error) => {
-          content.value =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
-    });
-
-    return {
-      content,
-      running,
-    };
-  },
-};
+onMounted(() => {
+  HomeAssistantService.getInfo().then(
+    (response) => {
+      content.value = response.data;
+    },
+    (error) => {
+      content.value =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+    }
+  );
+});
 </script>
 <style scoped>
 img {
