@@ -9,7 +9,7 @@
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Home_Assistant_Logo.svg/768px-Home_Assistant_Logo.svg.png"
       />
       <span class="text">
-        <h1>{{ content.location_name }} <br /></h1>
+        <h1>{{ content.location_name }} <br/></h1>
         <span class="clearfix">
           <i v-if="running" class="material-icons">filter_drama</i>
           <i v-else class="material-icons">block</i>
