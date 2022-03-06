@@ -1,31 +1,17 @@
 <template>
   <h2>{{ name }}</h2>
-  <h3>{{ temperature }}</h3>
+  <h3>{{ temperature }}º</h3>
   <br />
 </template>
 
 <script setup>
-// import { ref } from "vue";
-// export default {
-// name: "SensorTemperature",
-const props = defineProps({
-  name: String,
-  temperature: Number,
-  key: String
-});
-// props: {
-//   name: String,
-//   temperature: Number,
-//   key: String
-// },
-// setup(){
-// const temperature = ref('');
+import {defineProps} from "vue";
 
-// return {
-// temperature
-// }
-// },
-// };
+defineProps({
+  name: String,
+  temperature: Number
+});
 </script>
+
 <style scoped>
 </style>

@@ -16,8 +16,9 @@ class HandleHome {
     let sensorTemperatureList = [];
     this.getStates().then((sensorList) => {
       sensorList.forEach(sensor => {
-        if(sensor.attributes.device_class === 'humidity'
-        || sensor.attributes.device_class === 'temperature') {
+        if((sensor.attributes.device_class === 'humidity'
+        || sensor.attributes.device_class === 'temperature') 
+            && sensor.state !== 'unavailable') {
           sensorTemperatureList.push(sensor);
         }
       });
