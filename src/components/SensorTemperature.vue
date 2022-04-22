@@ -6,7 +6,7 @@
           <i class="material-icons">{{ icon }}</i>{{ friendlyName }}
         </b>
       </h4>
-      <h3>{{ value }}º</h3>
+      <h3>{{ value }} {{ unitSymbol }}</h3>
     </div>
   </div>
 </template>
@@ -22,6 +22,9 @@ let props = defineProps({
 const friendlyName = ref(props.name.replace('temperature', '').replace('humidity', ''));
 const icon = computed(
   () => `${props.type == "temperature" ? "thermostat" : "water_drop"}`
+);
+const unitSymbol = computed(
+  () => `${props.type == "temperature" ? "ºC" : "%"}`
 );
 </script>
 
