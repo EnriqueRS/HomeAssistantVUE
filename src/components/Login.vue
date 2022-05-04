@@ -6,19 +6,17 @@
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         class="profile-img-card"
       />
-      <Form @submit="handleLogin" :validation-schema="schema">
+      <form id="loginForm">
         <div class="form-group">
-          <label for="username">Username</label>
-          <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+            <label for="username">Username</label>
+            <input type="text" class="form-control" v-model="loginName">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
+          <input type="password" class="form-control" v-model="passwordName">
         </div>
         <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
+          <button @click="handleLogin" class="btn btn-primary btn-block" :disabled="loading">
             <span
               v-show="loading"
               class="spinner-border spinner-border-sm"
@@ -31,18 +29,19 @@
             {{ message }}
           </div>
         </div>
-      </Form>
+      </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { Form, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, provide } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
+let loginName = ref("");
+let passwordName = ref("");
 let loading = ref(false);
 let message = ref("");
 const store = useStore();
@@ -52,10 +51,12 @@ const schema = yup.object().shape({
   username: yup.string().required("Username is required!"),
   password: yup.string().required("Password is required!"),
 });
+provide('loginName', loginName.value);
 const loggedIn = computed(() => store.state.auth.status.loggedIn);
 
-function handleLogin(user) {
+function handleLogin() {
   loading.value = true;
+  const user = {'username': loginName.value, 'password': passwordName.value};
   store.dispatch("auth/login", user).then(
     () => {
       router.push("/home");
