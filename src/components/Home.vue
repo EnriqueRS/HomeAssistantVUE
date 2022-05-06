@@ -2,10 +2,22 @@
   <div class="container">
     <h-ainfo></h-ainfo>
     <h1>({{ sensorsSize }}) Sensors:</h1>
+    <h2>Temperature Sensors:</h2>
     <div class="row">
     <sensor-temperature
-    class="column"
+      class="column"
       v-for="sensor in sensorsTemperatureList"
+      v-bind:key="sensor.context.id"
+      v-bind:value="sensor.state"
+      v-bind:name="sensor.attributes.friendly_name"
+      v-bind:type="sensor.attributes.device_class"
+    ></sensor-temperature>
+    </div>
+    <h2>Humedity Sensors:</h2>
+    <div class="row">
+    <sensor-temperature
+      class="column"
+      v-for="sensor in sensorsHumedityList"
       v-bind:key="sensor.context.id"
       v-bind:value="sensor.state"
       v-bind:name="sensor.attributes.friendly_name"
@@ -22,11 +34,17 @@ import SensorTemperature from "./SensorTemperature.vue";
 import { ref, computed } from "vue";
 
   let sensorsTemperatureList = ref([]);
-  const sensorsSize = computed(() => `${sensorsTemperatureList.value.length}`)
+  let sensorsHumedityList = ref([]);
+  const sensorsSize = computed(() => `${sensorsTemperatureList.value.length+sensorsHumedityList.value.length}`)
 
-  HandleHome.getSensorsTemperature().then((sensor) => {
-    sensorsTemperatureList.value = sensor;
+  HandleHome.getSensorsTemperature().then((sensorsList) => {
+    sensorsTemperatureList.value = sensorsList;
     console.log(sensorsTemperatureList);
+  });
+
+  HandleHome.getSensorsHumidity().then((sensorsList) => {
+    sensorsHumedityList.value = sensorsList;
+    console.log(sensorsHumedityList);
   });
 </script>
 
