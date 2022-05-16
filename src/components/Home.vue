@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h-ainfo></h-ainfo>
+    <h-ainfo
+      @refresh="refreshData"
+    ></h-ainfo>
     <h1>({{ sensorsSize }}) Sensors:</h1>
     <h2>Temperature Sensors:</h2>
     <div class="row">
@@ -37,15 +39,25 @@ import { ref, computed } from "vue";
   let sensorsHumedityList = ref([]);
   const sensorsSize = computed(() => `${sensorsTemperatureList.value.length+sensorsHumedityList.value.length}`)
 
-  HandleHome.getSensorsTemperature().then((sensorsList) => {
-    sensorsTemperatureList.value = sensorsList;
-    console.log(sensorsTemperatureList);
-  });
+  function retrieveData() { 
+    HandleHome.getSensorsTemperature().then((sensorsList) => {
+      sensorsTemperatureList.value = sensorsList;
+      console.log(sensorsTemperatureList);
+    });
 
-  HandleHome.getSensorsHumidity().then((sensorsList) => {
-    sensorsHumedityList.value = sensorsList;
-    console.log(sensorsHumedityList);
-  });
+    HandleHome.getSensorsHumidity().then((sensorsList) => {
+      sensorsHumedityList.value = sensorsList;
+      console.log(sensorsHumedityList);
+    });
+  }
+  
+  function refreshData(data) {
+    console.log('show data');
+    console.log(data);
+    console.log('show data');
+    retrieveData();
+  }
+  refreshData();
 </script>
 
 <style scoped>

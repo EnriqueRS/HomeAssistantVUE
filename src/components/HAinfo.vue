@@ -13,9 +13,8 @@
         <span class="clearfix">
           <i v-if="running" class="material-icons">filter_drama</i>
           <i v-else class="material-icons">block</i>
-          <small class="right"
-            ><i>{{ content.state }}</i></small
-          >
+          <i v-if="running" v-on:click="refreshData()" class="material-icons refresh">refresh</i>
+          <small class="right"><i>{{ content.state }}</i></small>
         </span>
       </span>
     </div>
@@ -25,10 +24,11 @@
 
 <script setup>
 import HomeAssistantService from "../services/home-assistant.service";
-import { onMounted, ref, computed } from "vue";
+import { defineEmits, onMounted, ref, computed } from "vue";
 
 const content = ref("");
 const running = computed(() => content.value.state === "RUNNING");
+const emit = defineEmits(['refresh'])
 
 onMounted(() => {
   HomeAssistantService.getInfo().then(
@@ -45,6 +45,11 @@ onMounted(() => {
     }
   );
 });
+
+function refreshData() {
+  console.log('refreshData pressed');
+  emit('refresh', 'content');
+}
 </script>
 <style scoped>
 img {
@@ -103,5 +108,10 @@ img {
 
 .right {
   float: right;
+}
+
+.refresh {
+  float: right;
+  cursor: pointer;
 }
 </style>
