@@ -7,23 +7,27 @@
     <h2>Temperature Sensors:</h2>
     <div class="row">
     <sensor-temperature
+      @show-card="showCard"
       class="column"
       v-for="sensor in sensorsTemperatureList"
-      v-bind:key="sensor.context.id"
-      v-bind:value="sensor.state"
-      v-bind:name="sensor.attributes.friendly_name"
-      v-bind:type="sensor.attributes.device_class"
+      :key="sensor.context.id"
+      :value="sensor.state"
+      :name="sensor.attributes.friendly_name"
+      :type="sensor.attributes.device_class"
+      :symbol="sensor.attributes.unit_of_measurement"
     ></sensor-temperature>
     </div>
     <h2>Humedity Sensors:</h2>
     <div class="row">
     <sensor-temperature
+      @show-card="showCard"
       class="column"
       v-for="sensor in sensorsHumedityList"
-      v-bind:key="sensor.context.id"
-      v-bind:value="sensor.state"
-      v-bind:name="sensor.attributes.friendly_name"
-      v-bind:type="sensor.attributes.device_class"
+      :key="sensor.context.id"
+      :value="sensor.state"
+      :name="sensor.attributes.friendly_name"
+      :type="sensor.attributes.device_class"
+      :symbol="sensor.attributes.unit_of_measurement"
     ></sensor-temperature>
     </div>
   </div>
@@ -42,19 +46,18 @@ import { ref, computed } from "vue";
   function retrieveData() { 
     HandleHome.getSensorsTemperature().then((sensorsList) => {
       sensorsTemperatureList.value = sensorsList;
-      console.log(sensorsTemperatureList);
     });
 
     HandleHome.getSensorsHumidity().then((sensorsList) => {
       sensorsHumedityList.value = sensorsList;
-      console.log(sensorsHumedityList);
     });
   }
-  
-  function refreshData(data) {
-    console.log('show data');
-    console.log(data);
-    console.log('show data');
+
+  function showCard(name) {
+    console.log(name);
+  }
+
+  function refreshData() {
     retrieveData();
   }
   refreshData();

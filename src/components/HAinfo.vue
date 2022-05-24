@@ -47,8 +47,7 @@ onMounted(() => {
 });
 
 function refreshData() {
-  console.log('refreshData pressed');
-  emit('refresh', 'content');
+  emit('refresh');
 }
 </script>
 <style scoped>

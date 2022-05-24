@@ -1,31 +1,34 @@
 <template>
-  <div class="card">
+  <div v-on:click="showCard" class="card">
     <div class="container">
       <h4>
         <b>
           <i class="material-icons">{{ icon }}</i>{{ friendlyName }}
         </b>
       </h4>
-      <h3>{{ value }} {{ unitSymbol }}</h3>
+      <h3>{{ value }} {{ props.symbol }}</h3>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from "vue";
+import { ref, computed, defineProps, defineEmits } from "vue";
 
 let props = defineProps({
   name: String,
-  value: Number,
+  value: String,
   type: String,
+  symbol: String,
 });
+const emit = defineEmits(['show-card']);
 const friendlyName = ref(props.name.replace('temperature', '').replace('humidity', ''));
 const icon = computed(
   () => `${props.type == "temperature" ? "thermostat" : "water_drop"}`
 );
-const unitSymbol = computed(
-  () => `${props.type == "temperature" ? "ºC" : "%"}`
-);
+
+function showCard() {
+  emit('show-card', props.name);
+}
 </script>
 
 <style scoped>
